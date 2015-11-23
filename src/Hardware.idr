@@ -63,3 +63,8 @@ three = rippleCarry one two
 
 four : Byte
 four = rippleCarry one three
+
+mkByte : (n : Nat) -> Vect (log2 n) Bool
+mkByte k = ?a
+  where len = log2 k
+
