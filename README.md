@@ -1,6 +1,6 @@
 # Hardware
 
-A simulation of hardware in Idris.
+A toy implementation of hardware concepts in Idris
 
 The following has been implemented:
 
