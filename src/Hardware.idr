@@ -37,16 +37,13 @@ halfAdder a b = (xor a b, and a b)
 fullAdder : Bool -> Bool -> Bool -> (Bool, Bool)
 fullAdder a b c = (xor a (xor b c), or (and a b) (and c (xor a b)))
 
+Word : Nat -> Type
+Word n = Vect n Bool
+
 Byte : Type
-Byte = Vect 8 Bool
+Byte = Word 8
 
-zero : Byte
-zero = replicate 8 False
-
-one : Byte
-one = True :: replicate 7 False
-
-rippleCarry : Vect n Bool -> Vect n Bool -> Vect n Bool
+rippleCarry : Word n -> Word n -> Word n
 rippleCarry x y = go False x y
   where
     go : Bool -> Vect n Bool -> Vect n Bool -> Vect n Bool
@@ -54,6 +51,15 @@ rippleCarry x y = go False x y
     go carry (a :: as) (b :: bs) =
       let (s, c) = fullAdder a b carry
        in s :: go c as bs
+
+zero' : Byte
+zero' = replicate 8 False
+
+zero : Word n
+zero {n} = replicate n False
+
+one : Word (S n)
+one {n} = True :: replicate n False
 
 two : Byte
 two = rippleCarry one one
@@ -63,10 +69,3 @@ three = rippleCarry one two
 
 four : Byte
 four = rippleCarry one three
-
-mkByte : (n : Nat) -> Vect (log2 n) Bool
-mkByte k = let len = log2 k in rippleCarry one (go len k)
-  where
-    go : Nat -> Nat -> Vect (log2 n) Bool
-    go = ?a
-
